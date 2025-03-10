@@ -1,0 +1,77 @@
+.flex{
+    display: flex;
+}
+.pointer{
+    cursor: pointer;
+}
+.height{
+    height:50vh;
+    width: 50%;
+    border: 1px solid greenyellow;
+}
+
+.border-yellow{
+    border: 1px solid yellow;
+}
+
+.height-500{
+    height: 500px;
+    width: 500px;
+}
+
+.absolute{
+    position: absolute;
+    /* bottom: 0; */
+    /* padding-bottom: 10px; */
+    /* padding-left: 10px; */
+}
+
+.border{
+    border: 1px solid red;
+}
+
+.border-green{
+    border: 1px solid green;
+}
+
+.height-10{
+    height: 100px;
+    width: 100px;
+}
+
+.fixed{
+    position: fixed;
+    /* top:0; */
+    /* right: 0; */
+    bottom: 0;
+}
+
+.relative{
+    position: relative;
+    bottom: 10px;
+}
+
+.chat-message{
+   align-self: flex-end;
+    padding: 5px;
+}
+
+.response-message{
+    align-self: flex-start;
+    padding: 5px;
+}
+
+
+.inline{
+    display: inline;
+    /* height: 20px; */
+}
+
+.block{
+    display: block;
+}
+
+.height-5{
+    height: 50px;
+    width: 50px;
+}

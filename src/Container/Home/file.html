@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draw Arc in PptxGenJS</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.6.1/pptxgen.min.js"></script>
+</head>
+<body>
+<script>
+function drawRectangleWithArc(pptx, slide, x, y, width, height) {
+    // Draw the rectangle
+    slide.addShape(pptx.shapes.RECTANGLE, {
+        x: x,
+        y: y,
+        w: width,
+        h: height,
+        line: { color: '000000' }
+    });
+
+    // Draw the arc approximation using small lines
+    const arcRadius = width / 2;
+    const centerX = x + arcRadius;
+    const bottomY = y + height;
+    const numSegments = 20; // Increase for a smoother arc
+    const angleIncrement = Math.PI / numSegments;
+
+    for (let i = 0; i < numSegments; i++) {
+        const startAngle = Math.PI + i * angleIncrement;
+        const endAngle = Math.PI + (i + 1) * angleIncrement;
+        
+        const x1 = centerX + arcRadius * Math.cos(startAngle);
+        const y1 = bottomY + arcRadius * Math.sin(startAngle);
+        const x2 = centerX + arcRadius * Math.cos(endAngle);
+        const y2 = bottomY + arcRadius * Math.sin(endAngle);
+
+        slide.addShape(pptx.shapes.LINE, {
+            x: x1,
+            y: y1,
+            w: x2 - x1,
+            h: y2 - y1,
+            line: { color: '000000' }
+        });
+    }
+}
+
+// Create a new presentation
+const pptx = new PptxGenJS();
+const slide = pptx.addSlide();
+drawRectangleWithArc(pptx, slide, 1, 1, 4, 2);
+
+// Save the presentation
+pptx.writeFile('RectangleWithArc.pptx');
+</script>
+</body>
+</html>
+{\"layers\":[{\"layers\":[{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"flowChartConnector\",\"x\":\"3.69\",\"y\":\"3.83\",\"w\":\"7.03\",\"h\":\"7.03\",\"fill\":{},\"line\":{\"color\":\"color1\",\"width\":\"1.5\"}}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"1\",\"maximum\":\"2\",\"id\":\"customerName\"},\"optionsMeta\":{\"x\":\"4.69\",\"y\":\"11.52\",\"w\":\"5.04\",\"h\":\"0.77 \",\"fontSize\":\"12\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"bottom\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"line\",\"x\":\"6.05\",\"y\":\"12.39\",\"w\":\"2.31\",\"h\":\"0\",\"fill\":{},\"line\":{\"color\":\"color6\",\"width\":\"0.5\"}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"5.02\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"6.24\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"7.46\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"8.68\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"“\"},\"optionsMeta\":{\"x\":\"3.01\",\"y\":\"13.93\",\"w\":\"0.67\",\"h\":\"0.52\",\"fontSize\":\"32\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"valign\":\"middle\",\"align\":\"center\"}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"10\",\"maximum\":\"15\",\"id\":\"customerTestimonial\"},\"optionsMeta\":{\"x\":\"4.19\",\"y\":\"14.06\",\"w\":\"6.03 \",\"h\":\"2.39\",\"fontSize\":\"10\",\"breakline\":1,\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"middle\"}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"”\"},\"optionsMeta\":{\"fontSize\":\"32\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"x\":\"10.72\",\"y\":\"16.37\",\"w\":\"0.65\",\"h\":\"0.51\",\"valign\":\"middle\",\"align\":\"center\"}},{\"metaType\":\"image\",\"chatMeta\":{\"width\":\"5.85\",\"height\":\"5.85\",\"imageType\":\"STATIC\",\"id\":\"static1\",\"images\":[\"1.png\"],\"imageSequence\":\"\"},\"optionsMeta\":{\"x\":\"4.3\",\"y\":\"4.42\",\"rounding\":1}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"blockArc\",\"x\":\"3.5\",\"y\":\"3.64\",\"w\":\"7.42\",\"h\":\"7.42\",\"fill\":{\"color\":\"color2\"},\"line\":{},\"angleRange\":[\"90\",\"270\"],\"arcThicknessRatio\":\"0.1\",\"flipV\":0,\"flipH\":0}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"ellipse\",\"x\":\"4.3\",\"y\":\"4.42\",\"w\":\"5.85\",\"h\":\"5.85\",\"fill\":{\"color\":\"color1\",\"transparency\":\"70\"},\"line\":{}}}]},{\"layers\":[{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"flowChartConnector\",\"x\":\"13.42\",\"y\":\"3.83\",\"w\":\"7.03\",\"h\":\"7.03\",\"fill\":{},\"line\":{\"color\":\"color1\",\"width\":\"1.5\"}}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"1\",\"maximum\":\"2\",\"id\":\"customerName\"},\"optionsMeta\":{\"x\":\"14.42\",\"y\":\"11.52\",\"w\":\"5.04\",\"h\":\"0.77 \",\"fontSize\":\"12\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"bottom\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"line\",\"x\":\"15.74\",\"y\":\"12.39\",\"w\":\"2.31\",\"h\":\"0\",\"fill\":{},\"line\":{\"color\":\"color6\",\"width\":\"0.5\"}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"14.71\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{},\"x\":\"15.93\",\"y\":\"12.82\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"17.15\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"18.37\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"“\"},\"optionsMeta\":{\"x\":\"13.42\",\"y\":\"13.93\",\"w\":\"0.67\",\"h\":\"0.52\",\"fontSize\":\"32\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"middle\"}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"10\",\"maximum\":\"15\",\"id\":\"customerTestimonial\"},\"optionsMeta\":{\"x\":\"14.39 \",\"y\":\"14.06\",\"w\":\"5.03 \",\"h\":\"2.39 \",\"fontSize\":\"10\",\"breakline\":1,\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"middle\"}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"”\"},\"optionsMeta\":{\"x\":\"19.81 \",\"y\":\"16.37\",\"w\":\"0.65\",\"h\":\"0.51\",\"fontSize\":\"32\",\"color\":\"color6\",\"fontFace\":\"Century Gothic\",\"valign\":\"middle\",\"align\":\"center\"}},{\"metaType\":\"image\",\"chatMeta\":{\"width\":\"5.84\",\"height\":\"5.84\",\"imageType\":\"STATIC\",\"id\":\"static2\",\"images\":[\"2.png\"],\"imageSequence\":\"\"},\"optionsMeta\":{\"x\":\"14.03\",\"y\":\"4.43\",\"rounding\":1}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"blockArc\",\"x\":\"13.23\",\"y\":\"3.64\",\"w\":\"7.42\",\"h\":\"7.42\",\"fill\":{\"color\":\"color2\"},\"line\":{},\"angleRange\":[\"90\",\"270\"],\"arcThicknessRatio\":\"0.1\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"ellipse\",\"x\":\"14.03\",\"y\":\"4.43\",\"w\":\"5.84\",\"h\":\"5.84\",\"fill\":{\"color\":\"color1\",\"transparency\":\"70\"},\"line\":{}}}]},{\"layers\":[{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"flowChartConnector\",\"x\":\"23.15\",\"y\":\"3.83\",\"w\":\"7.03\",\"h\":\"7.03\",\"fill\":{},\"line\":{\"color\":\"color1\",\"width\":\"1.5\"}}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"1\",\"maximum\":\"2\",\"id\":\"customerName\"},\"optionsMeta\":{\"fontSize\":\"12\",\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"x\":\"24.48\",\"y\":\"11.52\",\"w\":\"5.04\",\"h\":\"0.77\",\"valign\":\"bottom\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"line\",\"x\":\"25.84\",\"y\":\"12.39\",\"w\":\"2.31\",\"h\":\"0\",\"fill\":{},\"line\":{\"color\":\"color6\",\"width\":\"0.5\"}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"24.81\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"26.03 \",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"27.25\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"star5\",\"x\":\"28.47\",\"y\":\"12.82\",\"w\":\"0.72\",\"h\":\"0.72\",\"fill\":{\"color\":\"color1\"},\"line\":{}}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"“\"},\"optionsMeta\":{\"x\":\"23.35\",\"y\":\"13.93\",\"w\":\"0.67\",\"h\":\"0.52\",\"fontSize\":\"32\",\"color\":\"color6\",\"fontFace\":\"Century Gothic\",\"align\":\"center\",\"valign\":\"middle\"}},{\"metaType\":\"text\",\"chatMeta\":{\"minimum\":\"10\",\"maximum\":\"15\",\"id\":\"customerTestimonial\"},\"optionsMeta\":{\"x\":\"23.93\",\"y\":\"14.06\",\"w\":\"6.14\",\"h\":\"2.39 \",\"fontSize\":\"10\",\"breakline\":1,\"fontFace\":\"Century Gothic\",\"color\":\"color6\",\"align\":\"center\",\"valign\":\"middle\"}},{\"metaType\":\"text\",\"chatMeta\":{\"static\":1,\"staticValue\":\"”\"},\"optionsMeta\":{\"x\":\"30.42 \",\"y\":\"16.37\",\"w\":\"0.65\",\"h\":\"0.51\",\"fontSize\":\"32\",\"color\":\"color6\",\"fontFace\":\"Century Gothic\",\"valign\":\"middle\",\"align\":\"center\"}},{\"metaType\":\"image\",\"chatMeta\":{\"width\":\"5.84\",\"height\":\"5.84\",\"imageType\":\"STATIC\",\"id\":\"static3\",\"images\":[\"3.png\"],\"imageSequence\":\"\"},\"optionsMeta\":{\"x\":\"23.75\",\"y\":\"4.43\",\"rounding\":1}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"blockArc\",\"x\":\"22.96\",\"y\":\"3.64\",\"w\":\"7.42\",\"h\":\"7.42\",\"fill\":{\"color\":\"color2\"},\"line\":{},\"angleRange\":[\"90\",\"270\"],\"arcThicknessRatio\":\"0.1\"}},{\"metaType\":\"shape\",\"chatMeta\":{},\"optionsMeta\":{\"shapeType\":\"ellipse\",\"x\":\"23.75\",\"y\":\"4.43\",\"w\":\"5.84\",\"h\":\"5.84\",\"fill\":{\"color\":\"color1\",\"transparency\":\"70\"},\"line\":{}}}]}]}"
+name

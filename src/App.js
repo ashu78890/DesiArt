@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+// App.js
 
-function App() {
+// import React from 'react';
+// import Homepage from './Container/Home/Home';
+// function App() {
+//     return (
+//         <div>
+//             <Homepage />
+//         </div>
+//     );
+// }
+
+// export default App;
+import React from 'react';
+import ImageCut from './Container/Cut';
+import CallApi from './Container/api';
+// import {Homepage} from './Container/Home/Home';
+import LimitedTextDiv from './Container/Home/Home';
+import ChatApp from './Components/chat';
+const App = () => {
+  const imageUrl = 'https://via.placeholder.com/500'; // Replace with your image URL
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <CallApi/>
+      {/* <h1>Image Cut Example</h1> */}
+      {/* <LimitedTextDiv/> */}
+     {/* <ChatApp/> */}
+      {/* <ImageCut imageUrl={imageUrl} /> */}
     </div>
   );
-}
+};
 
 export default App;

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Arc SVG</title>
+</head>
+<body>
+  <h1>Block Arc Example</h1>
+  <div id="block-arc-container"></div>
+
+  <script>
+    function createBlockArc(h, w, startAngle, endAngle, thickness, fillColor) {
+      // Convert degrees to radians
+      const toRadians = (angle) => (angle * Math.PI) / 180;
+
+      // Outer and inner radius
+      const outerRadiusX = w / 2;
+      const outerRadiusY = h / 2;
+      const innerRadiusX = outerRadiusX - thickness;
+      const innerRadiusY = outerRadiusY - thickness;
+
+      // Calculate the start and end points for the outer arc
+      const startXOuter = outerRadiusX + outerRadiusX * Math.cos(toRadians(startAngle));
+      const startYOuter = outerRadiusY - outerRadiusY * Math.sin(toRadians(startAngle));
+      const endXOuter = outerRadiusX + outerRadiusX * Math.cos(toRadians(endAngle));
+      const endYOuter = outerRadiusY - outerRadiusY * Math.sin(toRadians(endAngle));
+
+      // Calculate the start and end points for the inner arc
+      const startXInner = outerRadiusX + innerRadiusX * Math.cos(toRadians(endAngle));
+      const startYInner = outerRadiusY - innerRadiusY * Math.sin(toRadians(endAngle));
+      const endXInner = outerRadiusX + innerRadiusX * Math.cos(toRadians(startAngle));
+      const endYInner = outerRadiusY - innerRadiusY * Math.sin(toRadians(startAngle));
+
+      // Determine the large-arc-flag for both arcs
+      const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+
+      // Create the SVG path `d` attribute for the block arc
+      const d = `
+        M ${startXOuter},${startYOuter}
+        A ${outerRadiusX},${outerRadiusY} 0 ${largeArcFlag} 1 ${endXOuter},${endYOuter}
+        L ${startXInner},${startYInner}
+        A ${innerRadiusX},${innerRadiusY} 0 ${largeArcFlag} 0 ${endXInner},${endYInner}
+        Z
+      `;
+
+      // Return the SVG as a string
+      return `
+        <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+          <path d="${d.trim()}" fill="${fillColor}" />
+        </svg>
+      `;
+    }
+
+    const height = 200; 
+    const width = 200;  
+    const startAngle = 0;
+    const endAngle = 180; 
+    const thickness = 30; 
+    const fillColor = "#308D46"; 
+
+    // Generate the block arc and display it
+    const blockArc = createBlockArc(height, width, startAngle, endAngle, thickness, fillColor);
+    document.getElementById("block-arc-container").innerHTML = blockArc;
+  </script>
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Block Arc SVG</title>
+</head>
+<body>
+  <h1>Block Arc Example</h1>
+  <div id="block-arc-container"></div>
+  <svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+   <path 
+     d="
+       M 100,20 
+       A 80,80 0 0 1 180,100 
+       L 150,100 
+       A 50,50 0 0 0 100,50 
+       Z
+     " 
+     fill="red" 
+   />
+ </svg> -->
+ 
+
+  <!-- <script>
+    function createBlockArc(h, w, startAngle, endAngle, thickness, fillColor) {
+      // Convert degrees to radians
+      const toRadians = (angle) => (angle * Math.PI) / 180;
+
+      // Outer and inner radius
+      const outerRadiusX = w / 2;
+      const outerRadiusY = h / 2;
+      const innerRadiusX = outerRadiusX - thickness;
+      const innerRadiusY = outerRadiusY - thickness;
+
+      // Calculate the start and end points for the outer arc
+      const startXOuter = outerRadiusX + outerRadiusX * Math.cos(toRadians(startAngle));
+      const startYOuter = outerRadiusY - outerRadiusY * Math.sin(toRadians(startAngle));
+      const endXOuter = outerRadiusX + outerRadiusX * Math.cos(toRadians(endAngle));
+      const endYOuter = outerRadiusY - outerRadiusY * Math.sin(toRadians(endAngle));
+
+      // Calculate the start and end points for the inner arc
+      const startXInner = outerRadiusX + innerRadiusX * Math.cos(toRadians(endAngle));
+      const startYInner = outerRadiusY - innerRadiusY * Math.sin(toRadians(endAngle));
+      const endXInner = outerRadiusX + innerRadiusX * Math.cos(toRadians(startAngle));
+      const endYInner = outerRadiusY - innerRadiusY * Math.sin(toRadians(startAngle));
+
+      // Determine the large-arc-flag for both arcs
+      const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+
+      // Create the SVG path `d` attribute for the block arc
+      const d = `
+        M ${startXOuter},${startYOuter}
+        A ${outerRadiusX},${outerRadiusY} 0 ${largeArcFlag} 1 ${endXOuter},${endYOuter}
+        L ${startXInner},${startYInner}
+        A ${innerRadiusX},${innerRadiusY} 0 ${largeArcFlag} 0 ${endXInner},${endYInner}
+        Z
+      `;
+
+      // Return the SVG as a string
+      return `
+        <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+          <path d="${d.trim()}" fill="${fillColor}" />
+        </svg>
+      `;
+    }
+
+    // Set your values here
+    const height = 200; // Height of the arc
+    const width = 200;  // Width of the arc
+    const startAngle = 0; // Starting angle in degrees
+    const endAngle = 180; // Ending angle in degrees
+    const thickness = 30; // Thickness of the arc
+    const fillColor = "#308D46"; // Fill color of the arc
+
+    // Generate the block arc and display it
+    const blockArc = createBlockArc(height, width, startAngle, endAngle, thickness, fillColor);
+    document.getElementById("block-arc-container").innerHTML = blockArc;
+  </script> -->
+</body>
+</html>
+
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Arc Test</title>
+</head>
+<body>
+
+      
+     
+       <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path d="M60,60 L60,0 A60,60 0 0,1 120,60 Z" fill="blue" />
+      </svg> 
+      
+      
+</body>
+</html> -->
+
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic SVG Arc</title>
+</head>
+<body>
+
+   
+    <svg id="arc-svg" width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <path id="arc-path" fill="blue" />
+    </svg>
+
+    <script>
+        
+        function createArcPath(cx, cy, radius, startAngle, endAngle) {
+            const toRadians = (angle) => (angle - 90) * (Math.PI / 180); 
+
+          
+            const startX = cx + radius * Math.cos(toRadians(startAngle));
+            const startY = cy + radius * Math.sin(toRadians(startAngle));
+            const endX = cx + radius * Math.cos(toRadians(endAngle));
+            const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+         
+            const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+            return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+        }
+
+       
+        function updateArcWithArguments(startAngle, endAngle) {
+            const svgPath = document.getElementById("arc-path");
+            svgPath.setAttribute("d", createArcPath(60, 60, 60, startAngle, endAngle)); // Center (60, 60), Radius 60
+        }
+
+        
+        updateArcWithArguments(0, 270); 
+    </script>
+
+</body>
+</html> -->
+
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic SVG Arc</title>
+</head>
+<body>
+
+    SVG Container -->
+    <!-- <svg id="arc-svg" xmlns="http://www.w3.org/2000/svg">
+        <path id="arc-path" fill="blue" />
+    </svg>
+
+    <script>
+        function createArcPath(width, height, startAngle, endAngle) {
+            const cx = width / 2;
+            const cy = height / 2;
+            const radius = Math.min(width, height) / 2;
+
+            const toRadians = (angle) => (angle - 90) * (Math.PI / 180); 
+
+            const startX = cx + radius * Math.cos(toRadians(startAngle));
+            const startY = cy + radius * Math.sin(toRadians(startAngle));
+            const endX = cx + radius * Math.cos(toRadians(endAngle));
+            const endY = cy + radius * Math.sin(toRadians(endAngle));
+            const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+            return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+        }
+
+        function updateArcWithArguments(width, height, startAngle, endAngle) {
+            const svgElement = document.getElementById("arc-svg");
+            svgElement.setAttribute("width", width); 
+            svgElement.setAttribute("height", height); // Set the height dynamically
+            svgElement.setAttribute("viewBox", `0 0 ${width} ${height}`); // Adjust viewBox based on the size
+
+            // Update the arc path based on dynamic width, height, startAngle, and endAngle
+            const svgPath = document.getElementById("arc-path");
+            svgPath.setAttribute("d", createArcPath(width, height, startAngle, endAngle)); // Update the arc path
+        }
+
+        // Example: Update the arc with dynamic width, height, and angles (e.g., 0° to 70°)
+        updateArcWithArguments(300, 300, 70, 130); // You can change these values dynamically
+    </script>
+
+</body> -->
+<!-- </html>  -->
+
+
+
+
+
+
+<!-- <svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
+    <path id="arcPath" fill="none" stroke="black" stroke-width="2"/>
+  </svg>
+  
+  <script>
+    function generateArc(startAngle, endAngle, radius, centerX, centerY) {
+      // Convert angles from degrees to radians
+      const startRad = (startAngle * Math.PI) / 180;
+      const endRad = (endAngle * Math.PI) / 180;
+  
+      // Calculate the start and end coordinates based on the angles
+      const startX = centerX + radius * Math.cos(startRad);
+      const startY = centerY + radius * Math.sin(startRad);
+  
+      const endX = centerX + radius * Math.cos(endRad);
+      const endY = centerY + radius * Math.sin(endRad);
+  
+      // Determine the large arc flag and sweep flag for the arc command
+      const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+      const sweepFlag = 1; // 1 for clockwise, 0 for counterclockwise
+  
+      // Generate the SVG path
+      const arcPath = `
+        M ${startX} ${startY}
+        A ${radius} ${radius} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}
+      `;
+  
+      // Set the path data in the SVG element
+      document.getElementById('arcPath').setAttribute('d', arcPath);
+    }
+  
+    // Example: Start angle 0, End angle 90, Radius 90, Center at (100, 100)
+    generateArc(0, 90, 90, 100, 100);
+  </script>
+   -->
+
+   <!-- <!DOCTYPE html>
+   <html lang="en">
+   <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>SVG Arc Test</title>
+   </head>
+   <body>
+     <h1>SVG Arc Generator</h1>
+     <div id="arc-container"></div>
+   
+     <script>
+       function createArc(h, w, startAngle, endAngle, fillColor) {
+         const toRadians = (angle) => (angle * Math.PI) / 180;
+         const startX = w / 2 + (w / 2) * Math.cos(toRadians(startAngle));
+         const startY = h / 2 - (h / 2) * Math.sin(toRadians(startAngle));
+         const endX = w / 2 + (w / 2) * Math.cos(toRadians(endAngle));
+         const endY = h / 2 - (h / 2) * Math.sin(toRadians(endAngle));
+         const largeArcFlag = endAngle - startAngle <= 180 ? 0 : 1;
+         const d = `
+           M ${startX},${startY}
+           A ${w / 2},${h / 2} 0 ${largeArcFlag} 1 ${endX},${endY}
+           L ${w / 2},${h / 2}
+           Z
+         `;
+         return `
+           <svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+             <path d="${d.trim()}" fill="${fillColor}" />
+           </svg>
+         `;
+       }
+   
+       // Testing the function
+       const arcContainer = document.getElementById("arc-container");
+   
+       // Test 1: Green Arc from 45° to 270°
+       arcContainer.innerHTML += createArc(200, 200, 45, 270, "#308D46");
+   
+       // Test 2: Red Arc from 0° to 180°
+       arcContainer.innerHTML += createArc(300, 300, 0,90, "red");
+   
+       // Test 3: Blue Arc from 90° to 270°
+       arcContainer.innerHTML += createArc(150, 300, 90, 270, "blue");
+     </script>
+   </body>
+   </html> -->
+
+ 
+   
+  
+
+
+  

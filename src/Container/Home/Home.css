@@ -1,0 +1,109 @@
+
+
+
+/* .custom-textarea {
+  height: 100px; 
+  padding: 10px; 
+  overflow: auto;
+  resize: vertical;
+} 
+
+
+.custom-textarea::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: black;
+} */
+
+ /* .custom-textarea::-webkit-resizer {
+  width:8px; 
+  height: 8px;
+  /* background-color: #ccc; */
+  /* background-image: ; */
+/* }   */
+ 
+
+/*  
+textarea {
+
+    width: 300px;
+    height: 150px;
+  }
+
+
+  .resizable {
+    position: relative;
+    display: inline-block;
+  }
+
+  
+  .resize-handle {
+    width: 30px; 
+    height: 30px; 
+    position: absolute;
+    bottom: 0px;
+    right: -0px; 
+    cursor: se-resize; 
+    background-color: orangered; 
+    border-radius: 10%; 
+  } */
+
+
+  .container {
+    position: relative;
+    display: inline-block;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background: linear-gradient(90deg, #F09FFD 0%, #1494F1 100%);
+    /* width: 100%; */
+  }
+  
+  .custom-textarea {
+    height: 100px; 
+    padding: 10px; 
+    overflow: auto;
+    resize: vertical; 
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 10px;
+    border: 2px solid transparent;
+  }
+  
+  .extra-line-container {
+    position: absolute;
+    bottom: 0px; 
+    right: 0px; 
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+  
+  .extra-line {
+    position: absolute;
+    bottom: 15%;
+    right: 8px;
+    width: 1.5px;
+    height: 20px;
+    background: rgb(118, 118, 118);
+    transform: rotate(45deg); 
+  }
+
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+

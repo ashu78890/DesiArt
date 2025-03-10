@@ -1,0 +1,958 @@
+<!-- <svg id="arcSvg" xmlns="http://www.w3.org/2000/svg">
+  <path id="arcPath" fill="none" stroke="black" stroke-width="2" />
+</svg>
+
+<script>
+  function generateArc({ width, height, startAngle, endAngle }) {
+    // Calculate radius and center based on width and height
+    const radiusX = width / 2;
+    const radiusY = height / 2;
+    const centerX = radiusX;
+    const centerY = radiusY;
+
+    // Convert angles from degrees to radians
+    const startRad = (startAngle * Math.PI) / 180;
+    const endRad = (endAngle * Math.PI) / 180;
+
+    // Calculate the start and end coordinates based on the angles
+    const startX = centerX + radiusX * Math.cos(startRad);
+    const startY = centerY + radiusY * Math.sin(startRad);
+
+    const endX = centerX + radiusX * Math.cos(endRad);
+    const endY = centerY + radiusY * Math.sin(endRad);
+
+    // Determine the large arc flag and sweep flag for the arc command
+    const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+    const sweepFlag = 1; // 1 for clockwise, 0 for counterclockwise
+
+    // Generate the SVG path
+    const arcPath = `
+      M ${startX} ${startY}
+      A ${radiusX} ${radiusY} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}
+    `;
+
+    // Set the path data in the SVG element
+    const svg = document.getElementById('arcSvg');
+    svg.setAttribute('width', width);
+    svg.setAttribute('height', height);
+
+    document.getElementById('arcPath').setAttribute('d', arcPath);
+    arcElement.setAttribute('fill', 'red'); 
+  }
+
+  // Example: Generate an arc
+  generateArc({ width: 200, height: 200, startAngle:0 , endAngle: 90 });
+</script> -->
+
+
+
+
+
+
+
+
+
+
+// import React from 'react';
+
+// interface ArcProps {
+//   element: {
+//     option: {
+//       w: number; // Width of the SVG
+//       h: number; // Height of the SVG
+//       centerX?: number; // Center X of the arc
+//       centerY?: number; // Center Y of the arc
+//       startAngle?: number; // Optional start angle
+//       endAngle?: number; // Optional end angle
+//       fill?: { color: string }; // Optional fill color
+//       line?: { color: string; width: number }; // Optional stroke color and width
+//     };
+//   };
+// }
+
+// const Arc: React.FC<ArcProps> = ({ element }) => {
+//   const { 
+//     w, 
+//     h,  // Default centerY is the vertical midpoint
+//     startAngle = 0, 
+//     endAngle = 90, 
+//     fill, 
+//     line 
+//   } = element.option;
+
+//   const radiusX = w / 2;
+//   const radiusY = h / 2;
+//  const  centerX = w / 2; 
+//  const  centerY = h / 2;
+
+//   const startAngleRad = (startAngle * Math.PI) / 180;
+//   const endAngleRad = (endAngle * Math.PI) / 180;
+
+//   const startX = centerX + radiusX * Math.cos(startAngleRad);
+//   const startY = centerY + radiusY * Math.sin(startAngleRad);
+//   const endX = centerX + radiusX * Math.cos(endAngleRad);
+//   const endY = centerY + radiusY * Math.sin(endAngleRad);
+
+//   const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+//   const sweepFlag = 1; 
+
+
+//   const pathData = `M ${startX} ${startY} A ${radiusX} ${radiusY} 0 ${largeArcFlag} ${sweepFlag} ${endX} ${endY}`;
+
+//   return (
+//     <svg  width={w} height={h}>
+//       <path
+//         d={pathData}
+//         fill={fill?.color || 'none'}
+//         stroke={line?.color || 'black'} 
+//         strokeWidth={line?.width || 2} 
+//       />
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+// import DynamicSVG from "./DynamicSVG";
+
+
+
+interface DynamicArcProps {
+  width: number;
+  height: number;
+  startAngle: number;
+  endAngle: number;
+}
+
+// const Arc: React.FC<DynamicArcProps> = ({ width=300, height=300, startAngle=0, endAngle=70 }) => {
+//   const arcPathRef = useRef<SVGPathElement | null>(null);
+
+//   // Function to create the arc path dynamically based on start and end angles
+//   const createArcPath = (width: number, height: number, startAngle: number, endAngle: number): string => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2; // To ensure the arc fits within the SVG's bounds
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180); // Convert degrees to radians and rotate -90° for SVG's Y-down system.
+
+//     // Calculate start and end points of the arc
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     // Determine if the arc is large (more than 180°)
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     // Return the path data
+//     return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+//   };
+
+//   // Update the arc path when the component is mounted or when props change
+//   useEffect(() => {
+//     if (arcPathRef.current) {
+//       // Update the path with dynamic values
+//       arcPathRef.current.setAttribute('d', createArcPath(width, height, startAngle, endAngle));
+//     }
+//   }, [width, height, startAngle, endAngle]); // Trigger re-run when any of these props change
+
+//   return (
+//     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} xmlns="http://www.w3.org/2000/svg">
+//       <path ref={arcPathRef} fill="blue" />
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+
+
+// const Arc: React.FC<DynamicArcProps> = ({ width = 300, height = 300, startAngle = 0, endAngle = 70 }) => {
+//   const createArcPath = (width: number, height: number, startAngle: number, endAngle: number): string => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2;
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+//   };
+
+//   return (
+//     <svg width={width} height={height} viewBox={`0 0 ${width} ${height}`} xmlns="http://www.w3.org/2000/svg">
+//       <path fill="blue" d={createArcPath(width, height, startAngle, endAngle)} />
+//     </svg>
+//   );
+// };
+
+// export default Arc
+
+
+
+interface DynamicArcProps {
+  element: {
+    option: {
+      w: number;  // Width of the SVG
+      h: number;  // Height of the SVG
+      angleRange: [number, number];  // Array for startAngle and endAngle (e.g., [0, 90])
+      fill?: { color: string };  // Fill color for the arc
+      line?: { color: string, width: number };  // Stroke color and width for the arc
+    };
+  };
+}
+
+// Arc Component based on element.option with angles as an array
+// const Arc: React.FC<DynamicArcProps> = ({ element }) => {
+//   const { w, h, angleRange, fill, line } = element.option;
+//   console.log(angleRange,"angles")
+//   const [startAngle, endAngle] = angleRange;
+
+//   // Function to create the arc path dynamically based on start and end angles
+//   const createArcPath = (width: number, height: number, startAngle: number, endAngle: number): string => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2; // To ensure the arc fits within the SVG's bounds
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180); // Convert degrees to radians and rotate -90° for SVG's Y-down system.
+
+//     // Calculate start and end points of the arc
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+//   };
+
+//   return (
+//     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+//       <path 
+//         fill={fill?.color || "none"} 
+//         stroke={line?.color || "none"} 
+//         strokeWidth={line?.width || 0} 
+//         d={createArcPath(w, h, startAngle, endAngle)} 
+//       />
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+// const Arc: React.FC<DynamicArcProps> = ({ element }) => {
+//   const { w, h, angleRange, fill, line } = element.option;
+//   const [startAngle, endAngle] = angleRange;
+
+//   const createArcPath = (width: number, height: number, startAngle: number, endAngle: number): string => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2;
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     // Debugging: Log the calculated values
+//     console.log(`Start: (${startX}, ${startY}), End: (${endX}, ${endY}), Path: M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`);
+
+//     return `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+//   };
+
+//   return (
+//     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+//       <path 
+//         fill={fill?.color || "none"} 
+//         stroke={line?.color || "none"} 
+//         strokeWidth={line?.width || 0} 
+//         d={createArcPath(w, h, startAngle, endAngle)} 
+//       />
+//     </svg>
+//   );
+// };
+
+
+// export default Arc;
+
+
+
+
+// const Arc: React.FC<any> = ({ element }) => {
+//   const { w, h, angleRange, fill, line } = element.option;
+//   const [startAngle, endAngle] = angleRange;
+
+//   const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+
+//   const createArcPath = (width: number, height: number, startAngle: number, endAngle: number): { path: string; startX: number; startY: number; endX: number; endY: number } => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2;
+
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     return {
+//       path: `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`,
+//       startX,
+//       startY,
+//       endX,
+//       endY,
+//     };
+//   };
+
+//   const renderArrow = (x: number, y: number, angle: number, type: string | undefined) => {
+//     if (!type) return null;
+
+//     const size = 10; // Arrow size
+
+//     switch (type) {
+//       case "triangle":
+//         return (
+//           <polygon
+//             points={`${x},${y - size} ${x - size},${y + size} ${x + size},${y + size}`}
+//             fill={line?.color || "black"}
+//             transform={`rotate(${angle}, ${x}, ${y})`}
+//           />
+//         );
+//       case "oval":
+//         return (
+//           <ellipse
+//             cx={x}
+//             cy={y}
+//             rx={size}
+//             ry={size / 2}
+//             fill={line?.color || "black"}
+//             transform={`rotate(${angle}, ${x}, ${y})`}
+//           />
+//         );
+//       case "arrow":
+//         return (
+//           <path
+//             d={`M${x - size},${y + size} L${x},${y - size} L${x + size},${y + size} Z`}
+//             fill={line?.color || "black"}
+//             transform={`rotate(${angle}, ${x}, ${y})`}
+//           />
+//         );
+//       default:
+//         return null;
+//     }
+//   };
+
+//   const { path, startX, startY, endX, endY } = createArcPath(w, h, startAngle, endAngle);
+
+//   return (
+//     <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} xmlns="http://www.w3.org/2000/svg">
+//       {/* Arc Path */}
+//       <path
+//         fill={fill?.color || "none"}
+//         stroke={line?.color || "none"}
+//         strokeWidth={line?.width || 0}
+//         d={path}
+//       />
+
+//       {/* Begin Arrow */}
+//       {line?.beginArrowType &&
+//         renderArrow(
+//           startX,
+//           startY,
+//           startAngle, // Rotate based on the start angle
+//           line.beginArrowType
+//         )}
+
+//       {/* End Arrow */}
+//       {line?.endArrowType &&
+//         renderArrow(
+//           endX,
+//           endY,
+//           endAngle, // Rotate based on the end angle
+//           line.endArrowType
+//         )}
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+// interface ArcProps {
+//   element: {
+//     option: {
+//       w: number;
+//       h: number;
+//       line?: {
+//         color?: string;
+//         width?: number;
+//         beginArrowType?: "triangle" | "oval" | "arrow";
+//         endArrowType?: "triangle" | "oval" | "arrow";
+//       };
+//       fill?: {
+//         color?: string;
+//       };
+//       angleRange: [number, number]; // [startAngle, endAngle]
+//     };
+//   };
+// }
+
+// const Arc: React.FC<ArcProps> = ({ element }) => {
+//   const createArcPath = (
+//     width: number,
+//     height: number,
+//     startAngle: number,
+//     endAngle: number,
+//     excludeCenterLines: boolean
+//   ) => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2;
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     const path = excludeCenterLines
+//       ? `M${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY}`
+//       : `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+
+//     return {
+//       path,
+//       startX,
+//       startY,
+//       endX,
+//       endY,
+//     };
+//   };
+
+//   const drawArrow = (
+//     x: number,
+//     y: number,
+//     type: "triangle" | "oval" | "arrow",
+//     angle: number
+//   ): string => {
+//     const size = 5; 
+//     const toRadians = (angle: number): number => angle * (Math.PI / 180);
+
+//     switch (type) {
+//       case "triangle":
+//         return `M${x},${y} L${x - size},${y + size} L${x + size},${y + size} Z`;
+//       case "oval":
+//         return `M${x - size},${y} a${size},${size / 2} 0 1,0 ${
+//           size * 2
+//         },0 a${size},${size / 2} 0 1,0 -${size * 2},0`;
+//       case "arrow":
+//         const tipX = x + size * Math.cos(toRadians(angle));
+//         const tipY = y + size * Math.sin(toRadians(angle));
+//         const leftX = x + size * Math.cos(toRadians(angle + 150));
+//         const leftY = y + size * Math.sin(toRadians(angle + 150));
+//         const rightX = x + size * Math.cos(toRadians(angle - 150));
+//         const rightY = y + size * Math.sin(toRadians(angle - 150));
+//         return `M${tipX},${tipY} L${leftX},${leftY} L${rightX},${rightY} Z`;
+//       default:
+//         return "";
+//     }
+//   };
+
+//   const { option } = element;
+//   const { w, h, angleRange, line, fill } = option;
+
+//   const [startAngle, endAngle] = angleRange; // Destructure angleRange
+
+//   const { path, startX, startY, endX, endY } = createArcPath(
+//     w,
+//     h,
+//     startAngle,
+//     endAngle,
+//     !!line?.width // Exclude center lines if `line.width` is specified
+//   );
+
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox={`0 0 ${w} ${h}`}
+//       preserveAspectRatio="xMidYMid meet"
+//       style={{
+//         width: "100%",
+//         height: "auto",
+//         display: "block",
+//       }}
+//     >
+//       <path
+//         d={path}
+//         fill={fill?.color || "none"}
+//         stroke={line?.color || "black"}
+//         strokeWidth={line?.width || "none"}
+//       />
+//       {line?.beginArrowType && (
+//         <path
+//           d={drawArrow(startX, startY, line.beginArrowType, startAngle)}
+//           fill={line.color || "black"}
+//         />
+//       )}
+//       {line?.endArrowType && (
+//         <path
+//           d={drawArrow(endX, endY, line.endArrowType, endAngle)}
+//           fill={line.color || "black"}
+//         />
+//       )}
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+// interface ArcProps {
+//   element: {
+//     option: {
+//       w: number;
+//       h: number;
+//       line?: {
+//         color?: string;
+//         width?: number;
+//         beginArrowType?: "triangle" | "oval" | "arrow";
+//         endArrowType?: "triangle" | "oval" | "arrow";
+//       };
+//       fill?: {
+//         color?: string;
+//       };
+//       angleRange: [number, number]; // [startAngle, endAngle]
+//     };
+//   };
+// }
+
+// const Arc: React.FC<ArcProps> = ({ element }) => {
+//   const createArcPath = (
+//     width: number,
+//     height: number,
+//     startAngle: number,
+//     endAngle: number
+//   ) => {
+//     const cx = width / 2;
+//     const cy = height / 2;
+//     const radius = Math.min(width, height) / 2;
+
+//     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+
+//     const startX = cx + radius * Math.cos(toRadians(startAngle));
+//     const startY = cy + radius * Math.sin(toRadians(startAngle));
+//     const endX = cx + radius * Math.cos(toRadians(endAngle));
+//     const endY = cy + radius * Math.sin(toRadians(endAngle));
+
+//     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+
+//     // Always exclude center lines
+//     const path = `M${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY}`;
+
+//     return {
+//       path,
+//       startX,
+//       startY,
+//       endX,
+//       endY,
+//     };
+//   };
+
+//   const drawArrow = (
+//     x: number,
+//     y: number,
+//     type: "triangle" | "oval" | "arrow",
+//     angle: number
+//   ): string => {
+//     const size = 5; 
+//     const toRadians = (angle: number): number => angle * (Math.PI / 180);
+
+//     switch (type) {
+//       case "triangle":
+//         return `M${x},${y} L${x - size},${y + size} L${x + size},${y + size} Z`;
+//       case "oval":
+//         return `M${x - size},${y} a${size},${size / 2} 0 1,0 ${
+//           size * 2
+//         },0 a${size},${size / 2} 0 1,0 -${size * 2},0`;
+//       case "arrow":
+//         const tipX = x + size * Math.cos(toRadians(angle));
+//         const tipY = y + size * Math.sin(toRadians(angle));
+//         const leftX = x + size * Math.cos(toRadians(angle + 150));
+//         const leftY = y + size * Math.sin(toRadians(angle + 150));
+//         const rightX = x + size * Math.cos(toRadians(angle - 150));
+//         const rightY = y + size * Math.sin(toRadians(angle - 150));
+//         return `M${tipX},${tipY} L${leftX},${leftY} L${rightX},${rightY} Z`;
+//       default:
+//         return "";
+//     }
+//   };
+
+//   const { option } = element;
+//   const { w, h, angleRange, line, fill } = option;
+
+//   const [startAngle, endAngle] = angleRange; // Destructure angleRange
+
+//   const { path, startX, startY, endX, endY } = createArcPath(
+//     w,
+//     h,
+//     startAngle,
+//     endAngle
+//   );
+
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       viewBox={`0 0 ${w} ${h}`}
+//       preserveAspectRatio="xMidYMid meet"
+//       style={{
+//         width: "100%",
+//         height: "auto",
+//         display: "block",
+//       }}
+//     >
+//       <path
+//         d={path}
+//         fill={fill?.color || "none"}
+//         stroke={line?.color || "black"}
+//         strokeWidth={line?.width || "none"}
+//       />
+//       {line?.beginArrowType && (
+//         <path
+//           d={drawArrow(startX, startY, line.beginArrowType, startAngle)}
+//           fill={line.color || "black"}
+//         />
+//       )}
+//       {line?.endArrowType && (
+//         <path
+//           d={drawArrow(endX, endY, line.endArrowType, endAngle)}
+//           fill={line.color || "black"}
+//         />
+//       )}
+//     </svg>
+//   );
+// };
+
+// export default Arc;
+
+
+
+
+
+// const Arc: React.FC<ArcProps> = ({ element }) => {
+  //   const createArcPath = (
+  //     width: number,
+  //     height: number,
+  //     startAngle: number,
+  //     endAngle: number
+  //   ) => {
+  //     const cx = width / 2;
+  //     const cy = height / 2;
+  //     const radius = Math.min(width, height) / 2;
+      
+  
+  //     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+  
+  //     // Convert angles from PptxGenJS format (0° = top, clockwise) to SVG format
+  //     const adjustedStartAngle = 90 - startAngle;
+  //     const adjustedEndAngle = 90 - endAngle;
+  
+  //     const startX = cx + radius * Math.cos(toRadians(adjustedStartAngle));
+  //     const startY = cy - radius * Math.sin(toRadians(adjustedStartAngle)); // SVG uses inverted Y-axis
+  //     const endX = cx + radius * Math.cos(toRadians(adjustedEndAngle));
+  //     const endY = cy - radius * Math.sin(toRadians(adjustedEndAngle));
+  
+  //     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+  
+  //     const path = `M${cx},${cy} L${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} Z`;
+  
+  //     return {
+  //       path,
+  //       startX,
+  //       startY,
+  //       endX,
+  //       endY,
+  //     };
+  //   };
+  
+  //   const drawArrow = (
+  //     x: number,
+  //     y: number,
+  //     type: "triangle" | "oval" | "arrow",
+  //     angle: number
+  //   ): string => {
+  //     const size = 5; // Arrow size
+  //     const toRadians = (angle: number): number => angle * (Math.PI / 180);
+  
+  //     switch (type) {
+  //       case SHAPE_TYPE.triangle:
+  //         return `M${x},${y} L${x - size},${y + size} L${x + size},${y + size} Z`;
+  //       case "oval":
+  //         return `M${x - size},${y} a${size},${size / 2} 0 1,0 ${
+  //           size * 2
+  //         },0 a${size},${size / 2} 0 1,0 -${size * 2},0`;
+  //       case "arrow":
+  //         const tipX = x + size * Math.cos(toRadians(angle));
+  //         const tipY = y + size * Math.sin(toRadians(angle));
+  //         const leftX = x + size * Math.cos(toRadians(angle + 150));
+  //         const leftY = y + size * Math.sin(toRadians(angle + 150));
+  //         const rightX = x + size * Math.cos(toRadians(angle - 150));
+  //         const rightY = y + size * Math.sin(toRadians(angle - 150));
+  //         return `M${tipX},${tipY} L${leftX},${leftY} L${rightX},${rightY} Z`;
+  //       default:
+  //         return "";
+  //     }
+  //   };
+  
+  //   const { option } = element;
+  //   const { w, h, angleRange, line, fill } = option;
+  //   // console.log(line?.color,"line1")
+  
+  //   const [startAngle, endAngle] = angleRange; // Destructure angleRange
+  
+  //   const { path, startX, startY, endX, endY } = createArcPath(
+  //     w,
+  //     h,
+  //     startAngle,
+  //     endAngle
+  //   );
+  
+  //   return (
+  //     <svg
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       viewBox={`0 0 ${w} ${h}`}
+  //       preserveAspectRatio="xMidYMid meet"
+  //       style={{
+  //         width: "100%",
+  //         height: "auto",
+  //         display: "block",
+  //       }}
+  //     >
+  //       <path
+  //         d={path}
+  //         fill={fill?.color || "none"}
+  //         stroke={line?.color || "black"}
+  //         strokeWidth={line?.width || 0}
+  //       />
+  //       {line?.beginArrowType && (
+  //         <path
+  //           d={drawArrow(startX, startY, line.beginArrowType, startAngle)}
+  //           fill={line.color || "black"}
+  //         />
+  //       )}
+  //       {line?.endArrowType && (
+  //         <path
+  //           d={drawArrow(endX, endY, line.endArrowType, endAngle)}
+  //           fill={line.color || "black"}
+  //         />
+  //       )}
+  //     </svg>
+  //   );
+  // };
+  
+  // export default Arc;
+  
+  
+  
+  // const Arc: React.FC<ArcProps> = ({ element }) => {
+  //   const createArcPath = (
+  //     width: number,
+  //     height: number,
+  //     startAngle: number,
+  //     endAngle: number
+  //   ) => {
+  //     const cx = width / 2;
+  //     const cy = height / 2;
+  //     const radius = Math.min(width, height) / 2;
+      
+  //     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+  
+  //     // Convert angles from PptxGenJS format (0° = top, clockwise) to SVG format
+  //     const adjustedStartAngle = 90 - startAngle;
+  //     const adjustedEndAngle = 90 - endAngle;
+  
+  //     const startX = cx + radius * Math.cos(toRadians(adjustedStartAngle));
+  //     const startY = cy - radius * Math.sin(toRadians(adjustedStartAngle)); // SVG uses inverted Y-axis
+  //     const endX = cx + radius * Math.cos(toRadians(adjustedEndAngle));
+  //     const endY = cy - radius * Math.sin(toRadians(adjustedEndAngle));
+  
+  //     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+  
+  //     // Draw only the arc part, no lines from center to start/end
+  //     const path = `M${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY}`;
+  
+  //     return {
+  //       path,
+  //       startX,
+  //       startY,
+  //       endX,
+  //       endY,
+  //     };
+  //   };
+  
+  //   const drawArrow = (
+  //     x: number,
+  //     y: number,
+  //     type: "triangle" | "oval" | "arrow",
+  //     angle: number
+  //   ): string => {
+  //     const size = 5; // Arrow size
+  //     const toRadians = (angle: number): number => angle * (Math.PI / 180);
+  
+  //     switch (type) {
+  //       case "triangle":
+  //         return `M${x},${y} L${x - size},${y + size} L${x + size},${y + size} Z`;
+  //       case "oval":
+  //         return `M${x - size},${y} a${size},${size / 2} 0 1,0 ${
+  //           size * 2
+  //         },0 a${size},${size / 2} 0 1,0 -${size * 2},0`;
+  //       case "arrow":
+  //         const tipX = x + size * Math.cos(toRadians(angle));
+  //         const tipY = y + size * Math.sin(toRadians(angle));
+  //         const leftX = x + size * Math.cos(toRadians(angle + 150));
+  //         const leftY = y + size * Math.sin(toRadians(angle + 150));
+  //         const rightX = x + size * Math.cos(toRadians(angle - 150));
+  //         const rightY = y + size * Math.sin(toRadians(angle - 150));
+  //         return `M${tipX},${tipY} L${leftX},${leftY} L${rightX},${rightY} Z`;
+  //       default:
+  //         return "";
+  //     }
+  //   };
+  
+  //   const { option } = element;
+  //   const { w, h, angleRange, line, fill } = option;
+  
+  //   const [startAngle, endAngle] = angleRange; // Destructure angleRange
+  
+  //   const { path, startX, startY, endX, endY } = createArcPath(
+  //     w,
+  //     h,
+  //     startAngle,
+  //     endAngle
+  //   );
+  
+  //   return (
+  //     <svg
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       viewBox={`0 0 ${w} ${h}`}
+  //       preserveAspectRatio="xMidYMid meet"
+  //       style={{
+  //         width: "100%",
+  //         height: "auto",
+  //         display: "block",
+  //       }}
+  //     >
+  //       <path
+  //         d={path}
+  //         fill={fill?.color || "none"}
+  //         stroke={line?.color || "black"}
+  //         strokeWidth={line?.width || 0}
+  //       />
+  //       {line?.beginArrowType && (
+  //         <path
+  //           d={drawArrow(startX, startY, line.beginArrowType, startAngle)}
+  //           fill={line.color || "black"}
+  //         />
+  //       )}
+  //       {line?.endArrowType && (
+  //         <path
+  //           d={drawArrow(endX, endY, line.endArrowType, endAngle)}
+  //           fill={line.color || "black"}
+  //         />
+  //       )}
+  //     </svg>
+  //   );
+  // };
+  
+  // export default Arc
+  
+  
+  
+  // const Arc: React.FC<ArcProps> = ({ element }) => {
+  //   const createArcPath = (
+  //     width: number,
+  //     height: number,
+  //     startAngle: number,
+  //     endAngle: number
+  //   ) => {
+  //     const cx = width / 2;
+  //     const cy = height / 2;
+  //     const radius = Math.min(width, height) / 2;
+  
+  //     const toRadians = (angle: number): number => (angle - 90) * (Math.PI / 180);
+  
+  //     // Convert angles from PptxGenJS format (0° = top, clockwise) to SVG format
+  //     const adjustedStartAngle = 90 - startAngle;
+  //     const adjustedEndAngle = 90 - endAngle;
+  
+  //     const startX = cx + radius * Math.cos(toRadians(adjustedStartAngle));
+  //     const startY = cy - radius * Math.sin(toRadians(adjustedStartAngle)); // SVG uses inverted Y-axis
+  //     const endX = cx + radius * Math.cos(toRadians(adjustedEndAngle));
+  //     const endY = cy - radius * Math.sin(toRadians(adjustedEndAngle));
+  
+  //     const largeArcFlag = endAngle - startAngle > 180 ? 1 : 0;
+  
+  //     // Draw arc and then fill back to the center
+  //     const path = `M${startX},${startY} A${radius},${radius} 0 ${largeArcFlag},1 ${endX},${endY} L${cx},${cy} Z`;
+  
+  //     return {
+  //       path,
+  //       startX,
+  //       startY,
+  //       endX,
+  //       endY,
+  //       cx,
+  //       cy
+  //     };
+  //   };
+  
+  //   const { option } = element;
+  //   const { w, h, angleRange, line, fill } = option;
+  
+  //   const [startAngle, endAngle] = angleRange; // Destructure angleRange
+  
+  //   const { path, startX, startY, endX, endY, cx, cy } = createArcPath(
+  //     w,
+  //     h,
+  //     startAngle,
+  //     endAngle
+  //   );
+  
+  //   return (
+  //     <svg
+  //       xmlns="http://www.w3.org/2000/svg"
+  //       viewBox={`0 0 ${w} ${h}`}
+  //       preserveAspectRatio="xMidYMid meet"
+  //       style={{
+  //         width: "100%",
+  //         height: "auto",
+  //         display: "block",
+  //       }}
+  //     >
+  //       {/* Arc with stroke and filled area */}
+  //       <path
+  //         d={path}
+  //         fill={fill?.color || "none"}  // Fill the arc area
+  //         // stroke={line?.color || "black"}
+  //         strokeWidth={line?.width || 0}
+  //       />
+  //     </svg>
+  //   );
+  // };
+  
+  // export default Arc;
