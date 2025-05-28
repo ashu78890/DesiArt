@@ -1,0 +1,94 @@
+// styles/Topbar.scss
+
+.topbar {
+    height: 70px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  
+    .search {
+      input {
+        padding: 0.5rem 1rem;
+        border: 1px solid #e2e8f0;
+        border-radius: 8px;
+        outline: none;
+        width: 250px;
+        background-color: #f9fafb;
+      }
+    }
+  
+    .actions {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+  
+      .icon-badge {
+        position: relative;
+        font-size: 1.2rem;
+        color: #4a6cf7;
+  
+        .badge {
+          position: absolute;
+          top: -8px;
+          right: -8px;
+          background-color: #f56565;
+          color: white;
+          font-size: 0.65rem;
+          border-radius: 50%;
+          padding: 2px 5px;
+        }
+      }
+  
+      .language {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        cursor: pointer;
+  
+        img {
+          width: 20px;
+          height: 14px;
+          object-fit: cover;
+        }
+  
+        span {
+          font-size: 0.9rem;
+          font-weight: 500;
+          color: #2d3748;
+        }
+      }
+  
+      .profile {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+  
+        img {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+        }
+  
+        .details {
+          display: flex;
+          flex-direction: column;
+  
+          h4 {
+            margin: 0;
+            font-size: 0.95rem;
+            font-weight: 600;
+          }
+  
+          span {
+            font-size: 0.75rem;
+            color: #8a92a6;
+          }
+        }
+      }
+    }
+  }
+  

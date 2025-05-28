@@ -1,0 +1,822 @@
+//   const initialState = {
+//     templates: [],
+//     lastId: "",
+//     loading: false,
+//     error: null,
+//     hasMore: true,
+//   };
+  
+//   const templateReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//       case FETCH_TEMPLATES_REQUEST:
+//         return { ...state, loading: true };
+  
+//       case FETCH_TEMPLATES_SUCCESS:
+//         return {
+//           ...state,
+//           templates: [...state.templates, ...action.payload.templates],
+//           lastId: action.payload.lastId,
+//           loading: false,
+//           hasMore: action.payload.hasMore,
+//         };
+  
+//       case FETCH_TEMPLATES_FAILURE:
+//         return { ...state, loading: false, error: action.payload };
+  
+//       default:
+//         return state;
+//     }
+//   };
+  
+//   export default templateReducer;
+
+
+// const initialState = {
+//     templates: [],
+//     loading: false,
+//     error: null,
+//     lastId: null, // Track the last ID for pagination
+//   };
+  
+//   const templateReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//       case FETCH_TEMPLATES_REQUEST:
+//         return { ...state, loading: true, error: null };
+  
+//       case FETCH_TEMPLATES_SUCCESS:
+//         return {
+//           ...state,
+//           loading: false,
+//           templates: [...state.templates, ...action.payload.templates], // Append new data
+//           lastId: action.payload.lastId, // Update lastId
+//         };
+  
+//       case FETCH_TEMPLATES_FAILURE:
+//         return { ...state, loading: false, error: action.payload };
+  
+//       default:
+//         return state;
+//     }
+//   };
+  
+//   export default templateReducer;
+
+
+
+// const initialState = {
+//     templates: [],
+//     lastId: "",
+//     loading: false,
+//     error: null,
+//   };
+  
+//   const templateReducer = (state = initialState, action) => {
+//     switch (action.type) {
+//       case FETCH_TEMPLATES_REQUEST:
+//         return { ...state, loading: true, error: null };
+  
+//       case FETCH_TEMPLATES_SUCCESS:
+//         // return {
+//         //   ...state,
+//         //   templates: action.payload.lastId ? [...state.templates, ...action.payload.templates] : action.payload.templates,
+//         //   lastId: action.payload.lastId,
+//         //   loading: false,
+//         // };
+//         // return {
+//         //     ...state,
+//         //     templates: action.payload.lastId 
+//         //       ? [...state.templates, ...action.payload.templates]  // Append only if lastId exists
+//         //       : action.payload.templates, // Overwrite if it's the first fetch
+//         //     lastId: action.payload.lastId || "", // Store lastId for next API call
+//         //     loading: false,
+//         //   };
+
+//         return {
+//             ...state,
+//             templates: action.payload.lastId
+//               ? [...state.templates, ...action.payload.data.records] // Append records
+//               : action.payload.data.records, // Overwrite on first load
+//             lastId: action.payload.lastId || "", // Store lastId for next API call
+//             loading: false,
+//           };
+  
+//       case FETCH_TEMPLATES_FAILURE:
+//         return { ...state, loading: false, error: action.payload };
+  
+//       default:
+//         return state;
+//     }
+//   };
+  
+//   export default templateReducer;
+
+
+/ function* fetchTemplatesSaga(action) {
+//   try {
+//     const lastId = action.payload; // Get lastId from payload
+
+//     const response = yield call(fetchTemplatesAPI, lastId);
+//     const data = yield response.json();
+
+//     yield put(
+//       fetchTemplatesSuccess(data.templates || [], data.lastid || "", data.templates.length > 0)
+//     );
+//   } catch (error) {
+//     yield put(fetchTemplatesFailure(error.message));
+//   }
+// }
+
+// const fetchTemplatesAPI = (lastId) => {
+//   const myHeaders = new Headers();
+//   myHeaders.append(
+//     "Authorization",
+//     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ2YWx1ZSI6eyJpZCI6IjY3YWYxZjQ0NGIxZmUxNjhhZWI4ZmQzMCJ9LCJpYXQiOjE3NDI5NjQ3OTUsImV4cCI6MTc0Mjk5MzU5NX0.Gjm_WtuJWohkhb7iR5g_9tm975g2eIxmCOcG3xB_CZU"
+//   );
+//   myHeaders.append("Content-Type", "application/json");
+
+//   const raw = JSON.stringify({
+//     visibilityScope: "ALL",
+//     recordType: "ALL",
+//     limit: 8,
+//     viewShared: "SELF_SHARED",
+//     dir: "FORWARD",
+//     lastid: lastId,
+//   });
+
+//   return fetch("http://18.171.51.182/template/v1/list", {
+//     method: "POST",
+//     headers: myHeaders,
+//     body: raw,
+//   });
+// };
+
+// export function* watchFetchTemplates() {
+//   yield takeLatest(FETCH_TEMPLATES_REQUEST, fetchTemplatesSaga);
+// }
+
+
+// function* fetchTemplatesSaga(action) {
+//     try {
+//       const lastId = action.payload; // Get lastId from action
+//       const headers = new Headers();
+//       headers.append("Authorization", "YOUR_JWT_TOKEN_HERE");
+//       headers.append("Content-Type", "application/json");
+  
+//       // Conditionally set lastid
+//       const body = {
+//         visibilityScope: "ALL",
+//         recordType: "ALL",
+//         limit: 8,
+//         viewShared: "SELF_SHARED",
+//         dir: "FORWARD",
+//       };
+  
+//       if (lastId) {
+//         body.lastid = lastId;
+//       }
+  
+//       const response = yield call(fetch, "http://18.171.51.182/template/v1/list", {
+//         method: "POST",
+//         headers,
+//         body: JSON.stringify(body),
+//       });
+  
+//       const data = yield response.json();
+      
+//       if (response.ok) {
+//         yield put(fetchTemplatesSuccess(data.templates, data.lastid)); // Store lastid
+//       } else {
+//         throw new Error(data.message || "Failed to fetch templates");
+//       }
+//     } catch (error) {
+//       yield put(fetchTemplatesFailure(error.message));
+//     }
+//   }
+  
+//   export function* watchFetchTemplates() {
+//     yield takeLatest(FETCH_TEMPLATES_REQUEST, fetchTemplatesSaga);
+//   }
+
+
+
+
+// Dummy Data
+// const DUMMY_DATA = Array.from({ length: 50 }, (_, i) => ({
+//   id: i + 1,
+//   name: `Template ${i + 1}`,
+// }));
+
+// // Function to Simulate API Call
+// function* fetchTemplatesSaga(action) {
+//   try {
+//     yield delay(1000); // Simulate network delay
+
+//     let lastId = action.payload;
+//     let newTemplates;
+
+//     if (lastId === null) {
+//       // First call - Return first 8 items
+//       newTemplates = DUMMY_DATA.slice(0, 8);
+//       lastId = newTemplates[newTemplates.length - 1]?.id || null;
+//     } else {
+//       // Subsequent calls - Fetch next 8 items
+//       const startIndex = DUMMY_DATA.findIndex((t) => t.id === lastId);
+//       newTemplates = DUMMY_DATA.slice(startIndex + 1, startIndex + 9);
+//       lastId = newTemplates[newTemplates.length - 1]?.id || null;
+//     }
+
+//     yield put(fetchTemplatesSuccess(newTemplates, lastId));
+//   } catch (error) {
+//     yield put(fetchTemplatesFailure("Failed to fetch templates"));
+//   }
+// }
+
+// export function* watchFetchTemplates() {
+//   yield takeLatest(FETCH_TEMPLATES_REQUEST, fetchTemplatesSaga);
+// }
+
+
+
+
+// export const fetchTemplatesRequest = (lastId = "") => ({
+//   type: FETCH_TEMPLATES_REQUEST,
+//   payload: lastId,
+// });
+
+// export const fetchTemplatesSuccess = (templates, lastId, hasMore) => ({
+//   type: FETCH_TEMPLATES_SUCCESS,
+//   payload: { templates, lastId, hasMore },
+// });
+
+// export const fetchTemplatesFailure = (error) => ({
+//   type: FETCH_TEMPLATES_FAILURE,
+//   payload: error,
+// });
+
+// export const fetchTemplatesRequest = (lastId = null) => ({
+//     type: FETCH_TEMPLATES_REQUEST,
+//     payload: lastId, // Pass lastId only for subsequent requests
+//   });
+  
+//   export const fetchTemplatesSuccess = (templates, lastId) => ({
+//     type: FETCH_TEMPLATES_SUCCESS,
+//     payload: { templates, lastId },
+//   });
+  
+//   export const fetchTemplatesFailure = (error) => ({
+//     type: FETCH_TEMPLATES_FAILURE,
+//     payload: error,
+//   });
+
+
+
+// import React, { useEffect, useRef, useCallback ,useState} from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchTemplatesRequest } from "../Store/actions/templateActions";
+
+// const TemplateList = () => {
+//   const dispatch = useDispatch();
+//   const { templates, loading, hasMore, lastId } = useSelector((state) => state.templates);
+//   const observer = useRef();
+
+//   useEffect(() => {
+//     dispatch(fetchTemplatesRequest());
+//   }, [dispatch]);
+
+//   const lastElementRef = useCallback(
+//     (node) => {
+//       if (loading) return;
+//       if (observer.current) observer.current.disconnect();
+
+//       observer.current = new IntersectionObserver((entries) => {
+//         if (entries[0].isIntersecting && hasMore) {
+//           dispatch(fetchTemplatesRequest(lastId));
+//         }
+//       });
+
+//       if (node) observer.current.observe(node);
+//     },
+//     [loading, hasMore, dispatch, lastId]
+//   );
+
+//   return (
+//     <div>
+//       <h2>Templates</h2>
+//       {templates.map((template, index) => {
+//         if (index === templates.length - 1) {
+//           return (
+//             <div ref={lastElementRef} key={template.id} className="template-card">
+//               {template.name}
+//             </div>
+//           );
+//         } else {
+//           return (
+//             <div key={template.id} className="template-card">
+//               {template.name}
+//             </div>
+//           );
+//         }
+//       })}
+
+//       {loading && <p>Loading more...</p>}
+//     </div>
+//   );
+// };
+
+// export default TemplateList;
+
+
+// const TemplateList = () => {
+//     const dispatch = useDispatch();
+//     const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+  
+//     // First fetch
+//     useEffect(() => {
+//       dispatch(fetchTemplatesRequest());
+//     }, [dispatch]);
+  
+//     // Infinite Scroll Handler
+//     const handleScroll = () => {
+//       if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 200) {
+//         if (!loading && lastId) {
+//           dispatch(fetchTemplatesRequest(lastId));
+//         }
+//       }
+//     };
+  
+//     useEffect(() => {
+//       window.addEventListener("scroll", handleScroll);
+//       return () => window.removeEventListener("scroll", handleScroll);
+//     }, [loading, lastId]);
+  
+//     return (
+//       <div>
+//         <h2>Templates</h2>
+//         {templates.map((template, index) => (
+//           <div key={index} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     );
+//   };
+  
+//   export default TemplateList;
+
+
+
+
+// const TemplateList = () => {
+//     const dispatch = useDispatch();
+//     const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//     const listRef = useRef(null);
+  
+//     // First fetch
+//     useEffect(() => {
+//       dispatch(fetchTemplatesRequest());
+//     }, [dispatch]);
+  
+//     // Infinite Scroll Handler on Div
+//     const handleScroll = () => {
+//       if (listRef.current) {
+//         const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+  
+//         if (scrollTop + clientHeight >= scrollHeight - 20) {
+//           if (!loading && lastId) {
+//             dispatch(fetchTemplatesRequest(lastId));
+//           }
+//         }
+//       }
+//     };
+  
+//     return (
+//       <div
+//         ref={listRef}
+//         onScroll={handleScroll}
+//         style={{
+//           height: "400px", 
+//           overflowY: "auto",
+//           border: "1px solid #ccc",
+//           padding: "10px"
+//         }}
+//       >
+//         <h2>Templates</h2>
+//         {templates.map((template) => (
+//           <div key={template.id} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     );
+//   };
+  
+//   export default TemplateList;
+
+
+// const TemplateList = () => {
+//     const dispatch = useDispatch();
+//     const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//     const listRef = useRef(null);
+//     const [recordType, setRecordType] = useState("ALL"); // Default tab
+  
+//     // Fetch templates when tab changes
+//     useEffect(() => {
+//       dispatch(fetchTemplatesRequest({ recordType, lastId: "" }));
+//     }, [dispatch, recordType]);
+  
+//     // Infinite Scroll Handler
+//     const handleScroll = () => {
+//       if (listRef.current) {
+//         const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+//         if (scrollTop + clientHeight >= scrollHeight - 20) {
+//           if (!loading && lastId) {
+//             dispatch(fetchTemplatesRequest({ recordType, lastId }));
+//           }
+//         }
+//       }
+//     };
+  
+//     return (
+//       <div>
+//         {/* Tabs */}
+//         <div className="tabs">
+//           {["ALL", "SOME", "TINY"].map((type) => (
+//             <button
+//               key={type}
+//               className={recordType === type ? "active" : ""}
+//               onClick={() => setRecordType(type)}
+//             >
+//               {type}
+//             </button>
+//           ))}
+//         </div>
+  
+//         {/* Scrollable List */}
+//         <div
+//           ref={listRef}
+//           onScroll={handleScroll}
+//           style={{
+//             height: "400px",
+//             overflowY: "auto",
+//             border: "1px solid #ccc",
+//             padding: "10px",
+//           }}
+//         >
+//           <h2>Templates ({recordType})</h2>
+//           {templates.map((template) => (
+//             <div key={template.id} className="template-item">
+//               {template.name}
+//             </div>
+//           ))}
+//           {loading && <p>Loading...</p>}
+//           {error && <p>Error: {error}</p>}
+//         </div>
+//       </div>
+//     );
+//   };
+  
+//   export default TemplateList;
+
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchTemplatesRequest } from "../Store/actions/templateActions";
+
+// const TemplateList = () => {
+//   const dispatch = useDispatch();
+//   const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//   const listRef = useRef(null);
+//   const [recordType, setRecordType] = useState("ALL"); // Default tab
+// console.log(templates?.data?.records,"asdh")
+//   // Fetch templates when tab changes
+//   useEffect(() => {
+//     dispatch(fetchTemplatesRequest({ recordType, lastId: "" }));
+//   }, [dispatch, recordType]);
+
+
+
+// const handleScroll = () => {
+//     if (listRef.current) {
+//       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+//       if (scrollTop + clientHeight >= scrollHeight - 20) {
+//         if (!loading && lastId) {
+//           dispatch(fetchTemplatesRequest({ recordType, lastId })); // Use lastId only for pagination
+//         }
+//       }
+//     }
+//   };
+  
+
+//   return (
+//     <div>
+//       {/* Tabs */}
+//       <div className="tabs">
+//         {["ALL", "SOME", "TINY"].map((type) => (
+//           <button
+//             key={type}
+//             className={recordType === type ? "active" : ""}
+//             onClick={() => setRecordType(type)}
+//           >
+//             {type}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Scrollable List */}
+//       <div
+//         ref={listRef}
+//         onScroll={handleScroll}
+//         style={{
+//           height: "400px",
+//           overflowY: "auto",
+//           border: "1px solid #ccc",
+//           padding: "10px",
+//         }}
+//       >
+//         <h2>Templates ({recordType})</h2>
+//         {templates?.map((template,index) => (
+//           <div key={index} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TemplateList;
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchTemplatesRequest } from "../Store/actions/templateActions";
+
+// const TemplateList = () => {
+//   const dispatch = useDispatch();
+//   const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//   const listRef = useRef(null);
+
+//   const tabApiMapping = {
+//     "All": "ALL",
+//     "My templates": "PRIVATE",
+//     "Shared with me": "PRIVATE", 
+//     "Community": "PUBLIC",
+//     "Predefined": "PRE_DEFINED",
+//   };
+//   const [visibilityScope, setVisibilityScope] = useState("ALL"); // Default tab
+
+
+
+//   const handleTabChange = (tab) => {
+//     setVisibilityScope(tab);
+//     dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[tab], lastId: "" }));
+//   };
+
+//   // Fetch templates when tab changes
+//   useEffect(() => {
+//     dispatch(fetchTemplatesRequest({ visibilityScope:tabApiMapping[tab], lastId: "" }));
+//   }, [dispatch, visibilityScope]);
+
+//   // Handle Scroll
+//   const handleScroll = () => {
+//     if (listRef.current) {
+//       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+//       if (scrollTop + clientHeight >= scrollHeight - 20) {
+//         if (!loading && lastId) {
+//           dispatch(fetchTemplatesRequest({ visibilityScope:tabApiMapping[tab], lastId })); // Use lastId only for pagination
+//         }
+//       }
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {/* Tabs */}
+//       {/* <div className="tabs">
+//         {["ALL", "SOME", "TINY"].map((type) => (
+//           <button
+//             key={type}
+//             className={recordType === type ? "active" : ""}
+//             onClick={() => {
+//               setRecordType(type);
+//               dispatch(fetchTemplatesRequest({ recordType: type, lastId: "" })); // Reset pagination on tab change
+//             }}
+//           >
+//             {type}
+//           </button>
+//         ))}
+//       </div> */}
+//       <div className="tabs">
+//   {Object.keys(tabApiMapping).map((tab) => (
+//     <button
+//       key={tab}
+//       className={visibilityScope === tab ? "active" : ""}
+//       onClick={() => handleTabChange(tab)}
+//     >
+//       {tab}
+//     </button>
+//   ))}
+// </div>
+
+//       {/* Scrollable List */}
+//       <div
+//         ref={listRef}
+//         onScroll={handleScroll}
+//         style={{
+//           height: "400px",
+//           overflowY: "auto",
+//           border: "1px solid #ccc",
+//           padding: "10px",
+//         }}
+//       >
+//         <h2>Templates ({visibilityScope})</h2>
+//         {templates?.map((template, index) => (
+//           <div key={index} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TemplateList;
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchTemplatesRequest } from "../Store/actions/templateActions";
+
+// const TemplateList = () => {
+//   const dispatch = useDispatch();
+//   const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//   const listRef = useRef(null);
+
+//   const tabApiMapping = {
+//     "All": "ALL",
+//     "My templates": "PRIVATE",
+//     "Shared with me": "PRIVATE",
+//     "Community": "PUBLIC",
+//     "Predefined": "PRE_DEFINED",
+//   };
+
+//   const [visibilityScope, setVisibilityScope] = useState("All"); // Default to "All" (matches tab keys)
+
+//   // Fetch templates when the tab changes
+//   useEffect(() => {
+//     dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[visibilityScope], lastId: "" }));
+//   }, [dispatch, visibilityScope]);
+
+//   // Handle tab change
+//   const handleTabChange = (tab) => {
+//     setVisibilityScope(tab);
+//     dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[tab], lastId: "" }));
+//   };
+
+//   // Handle Scroll for infinite scrolling
+//   const handleScroll = () => {
+//     if (listRef.current) {
+//       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+//       if (scrollTop + clientHeight >= scrollHeight - 20) {
+//         if (!loading && lastId) {
+//           dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[visibilityScope], lastId })); // Corrected usage
+//         }
+//       }
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {/* Tabs */}
+//       <div className="tabs">
+//         {Object.keys(tabApiMapping).map((tab) => (
+//           <button
+//             key={tab}
+//             className={visibilityScope === tab ? "active" : ""}
+//             onClick={() => handleTabChange(tab)}
+//           >
+//             {tab}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Scrollable List */}
+//       <div
+//         ref={listRef}
+//         onScroll={handleScroll}
+//         style={{
+//           height: "400px",
+//           overflowY: "auto",
+//           border: "1px solid #ccc",
+//           padding: "10px",
+//         }}
+//       >
+//         <h2>Templates ({tabApiMapping[visibilityScope]})</h2>
+//         {templates?.map((template, index) => (
+//           <div key={index} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TemplateList;
+
+
+
+// import React, { useEffect, useRef, useState } from "react";
+// import { useDispatch, useSelector } from "react-redux";
+// import { fetchTemplatesRequest } from "../Store/actions/templateActions";
+
+// const TemplateList = () => {
+//   const dispatch = useDispatch();
+//   const { templates, lastId, loading, error } = useSelector((state) => state.templates);
+//   const listRef = useRef(null);
+
+//   const tabApiMapping = {
+//     "All": "ALL",
+//     "My templates": "PRIVATE",
+//     "Shared with me": "PRIVATE",
+//     "Community": "PUBLIC",
+//     "Predefined": "PRE_DEFINED",
+//   };
+
+//   const [visibilityScope, setVisibilityScope] = useState("All"); // Default tab
+
+//   // Fetch templates when the tab changes
+//   useEffect(() => {
+//     dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[visibilityScope], lastId: "" }));
+//   }, [dispatch, visibilityScope]);
+
+//   // Handle tab change
+//   const handleTabChange = (tab) => {
+//     setVisibilityScope(tab);
+//     if (listRef.current) listRef.current.scrollTop = 0; // Reset scroll position
+//     dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[tab], lastId: "" })); // Reset lastId
+//   };
+
+//   // Handle Scroll for infinite scrolling
+//   const handleScroll = () => {
+//     if (listRef.current) {
+//       const { scrollTop, scrollHeight, clientHeight } = listRef.current;
+//       if (scrollTop + clientHeight >= scrollHeight - 20) {
+//         if (!loading && lastId) {
+//           dispatch(fetchTemplatesRequest({ visibilityScope: tabApiMapping[visibilityScope], lastId })); // Correct usage
+//         }
+//       }
+//     }
+//   };
+
+//   return (
+//     <div>
+//       {/* Tabs */}
+//       <div className="tabs">
+//         {Object.keys(tabApiMapping).map((tab) => (
+//           <button
+//             key={tab}
+//             className={visibilityScope === tab ? "active" : ""}
+//             onClick={() => handleTabChange(tab)}
+//           >
+//             {tab}
+//           </button>
+//         ))}
+//       </div>
+
+//       {/* Scrollable List */}
+//       <div
+//         ref={listRef}
+//         onScroll={handleScroll}
+//         style={{
+//           height: "400px",
+//           overflowY: "auto",
+//           border: "1px solid #ccc",
+//           padding: "10px",
+//         }}
+//       >
+//         <h2>Templates ({tabApiMapping[visibilityScope]})</h2>
+//         {templates?.map((template, index) => (
+//           <div key={index} className="template-item">
+//             {template.name}
+//           </div>
+//         ))}
+//         {loading && <p>Loading...</p>}
+//         {error && <p>Error: {error}</p>}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default TemplateList;

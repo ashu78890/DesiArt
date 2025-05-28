@@ -1,0 +1,17 @@
+// styles/products.scss
+
+.products-page {
+    padding: 2rem;
+  
+    h1 {
+      margin-bottom: 2rem;
+      color: #111827;
+    }
+  
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 2rem;
+    }
+  }
+  

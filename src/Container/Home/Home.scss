@@ -1,0 +1,128 @@
+
+
+
+/* .custom-textarea {
+  height: 100px; 
+  padding: 10px; 
+  overflow: auto;
+  resize: vertical;
+} 
+
+
+.custom-textarea::after {
+  content: '';
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: black;
+} */
+
+ /* .custom-textarea::-webkit-resizer {
+  width:8px; 
+  height: 8px;
+  /* background-color: #ccc; */
+  /* background-image: ; */
+/* }   */
+ 
+
+/*  
+textarea {
+
+    width: 300px;
+    height: 150px;
+  }
+
+
+  .resizable {
+    position: relative;
+    display: inline-block;
+  }
+
+  
+  .resize-handle {
+    width: 30px; 
+    height: 30px; 
+    position: absolute;
+    bottom: 0px;
+    right: -0px; 
+    cursor: se-resize; 
+    background-color: orangered; 
+    border-radius: 10%; 
+  } */
+
+
+  @import "/src/global.scss";
+
+  .home {
+    .hero {
+      text-align: center;
+      padding: 5rem 1rem;
+      background: $primary-color;
+      color: white;
+  
+      h1 {
+        font-size: 3rem;
+      }
+  
+      p {
+        font-size: 1.2rem;
+      }
+  
+      .explore-btn {
+        margin-top: 1rem;
+        padding: 0.7rem 1.5rem;
+        background: $secondary-color;
+        color: white;
+        border: none;
+        cursor: pointer;
+  
+        &:hover {
+          background: darken($secondary-color, 10%);
+        }
+      }
+    }
+  
+    .categories, .featured-artists, .popular-artworks {
+      padding: 2rem;
+      text-align: center;
+  
+      .category-list, .artist-list, .art-grid {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+  
+        .category, .artist-card, .art-card {
+          padding: 1rem;
+          background: white;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          border-radius: 8px;
+        }
+      }
+    }
+  
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: $primary-color;
+      color: white;
+    }
+  }
+  
+
+  
+  
+  
+  
+  
+  
+
+
+
+
+
+
+
+
+

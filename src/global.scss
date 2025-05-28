@@ -1,0 +1,135 @@
+// 🌟 Color Variables
+$primary-color: #308D46;  // Green shade
+$secondary-color: #FF9800; // Orange shade
+$background-color: #F9F9F9;
+$text-color: #333;
+$border-color: #ddd;
+
+// 🎨 Typography
+$font-primary: 'Manrope', sans-serif;
+$font-secondary: 'Covered By Your Grace', cursive;
+
+// 🌍 Global Styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: $font-primary;
+}
+
+body {
+  background-color: $background-color;
+  color: $text-color;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+
+@mixin box-shadow {
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+
+.btn {
+  padding: 0.8rem 1.5rem;
+  border: none;
+  font-size: 1rem;
+  background: $primary-color;
+  color: white;
+  border-radius: 5px;
+  @include box-shadow;
+
+  &:hover {
+    background: darken($primary-color, 10%);
+  }
+}
+
+
+.card {
+  padding: 1.5rem;
+  background: white;
+  border-radius: 10px;
+  @include box-shadow;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    max-width: 300px;
+  }
+  
+  .draggable-item {
+    padding: 10px;
+    background-color: #308D46;
+    color: white;
+    border-radius: 5px;
+    cursor: grab;
+    text-align: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+  
+  .dragging {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+  
+
+// .template-item {
+//     padding: 10px;
+//     margin: 10px 0;
+//     background-color: #f5f5f5;
+//     border: 1px solid #ddd;
+//     border-radius: 5px;
+//   }
+
+.tabs {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .tabs button {
+    padding: 8px 16px;
+    border: none;
+    background: #ddd;
+    cursor: pointer;
+  }
+  
+  .tabs button.active {
+    background: #308D46;
+    color: white;
+    font-weight: bold;
+  }
+  
+  .template-item {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  

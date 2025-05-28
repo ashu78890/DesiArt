@@ -1,0 +1,35 @@
+@import "../global.scss";
+
+.navbar {
+  background: $primary-color;
+  padding: 1rem 0;
+  color: white;
+
+  .container {
+    @include flex-center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    font-size: 1.8rem;
+    font-family: $font-secondary;
+  }
+
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+
+    li {
+      a {
+        color: white;
+        font-size: 1.1rem;
+        transition: color 0.3s ease;
+
+        &:hover {
+          color: $secondary-color;
+        }
+      }
+    }
+  }
+}
